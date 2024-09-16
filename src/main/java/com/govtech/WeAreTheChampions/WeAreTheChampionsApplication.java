@@ -1,4 +1,4 @@
-package com.example.WeAreTheChampions;
+package com.govtech.WeAreTheChampions;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
