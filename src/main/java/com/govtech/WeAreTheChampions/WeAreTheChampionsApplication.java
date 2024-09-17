@@ -20,7 +20,7 @@ import java.util.Optional;
 @SpringBootApplication
 @EnableJpaRepositories("my.package.base.*")
 @ComponentScan(basePackages = { "my.package.base.*" })
-@EntityScan("my.package.base.*")
+@EntityScan("com.govtech.WeAreTheChampions.entity")
 public class WeAreTheChampionsApplication implements CommandLineRunner {
 
 	private TeamService teamService;

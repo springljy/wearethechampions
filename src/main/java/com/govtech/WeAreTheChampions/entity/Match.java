@@ -1,7 +1,7 @@
 package com.govtech.WeAreTheChampions.entity;
 
 import lombok.*;
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "matches")
