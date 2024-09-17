@@ -4,7 +4,7 @@ import lombok.*;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "match")
+@Table(name = "matches")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

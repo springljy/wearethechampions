@@ -1,4 +1,4 @@
-package com.example.WeAreTheChampions;
+package com.govtech.WeAreTheChampions;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
