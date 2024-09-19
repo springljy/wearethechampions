@@ -5,12 +5,14 @@ import './sidebar.css';
 import GroupsIcon from '@mui/icons-material/Groups';
 import SportsSoccerIcon from '@mui/icons-material/SportsSoccer';
 import LeaderboardIcon from '@mui/icons-material/Leaderboard';
+import StickyNote2OutlinedIcon from '@mui/icons-material/StickyNote2Outlined';
 
 const Sidebar: React.FC = () => {
   const navItems = [
     { text: 'Teams Management', path: '/teams', icon: <GroupsIcon /> },
     { text: 'Match Results', path: '/matches', icon: <SportsSoccerIcon /> },
     { text: 'Rankings', path: '/rankings', icon: <LeaderboardIcon /> },
+    { text: 'Audit Logs', path: '/auditlogs', icon: <StickyNote2OutlinedIcon /> },
   ];
 
   return (

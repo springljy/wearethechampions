@@ -10,6 +10,7 @@ import com.govtech.WeAreTheChampions.dto.MatchDto;
 import com.govtech.WeAreTheChampions.repository.MatchRepository;
 import com.govtech.WeAreTheChampions.repository.TeamRepository;
 import com.govtech.WeAreTheChampions.service.MatchService;
+import com.govtech.WeAreTheChampions.service.AuditLogService;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,6 +22,8 @@ public class MatchServiceImpl implements MatchService {
 
     private MatchRepository matchRepository;
     private TeamRepository teamRepository;
+
+    private AuditLogService auditLogService;
 
     @Override
     public List<Match> addMatches(List<MatchDto> matches) {
@@ -47,6 +50,10 @@ public class MatchServiceImpl implements MatchService {
 
             newMatches.add(match);
             updateTeamStats(teamA, teamB, teamAGoals, teamBGoals);
+
+            auditLogService.logAction(1L, "CREATE", "Match", match.getId(),
+                    "Created match between " + teamA.getName() + " and " + teamB.getName() +
+                            " with result: " + match.getResult());
         }
 
         return matchRepository.saveAll(newMatches);
@@ -88,6 +95,7 @@ public class MatchServiceImpl implements MatchService {
 
     public void deleteAllMatches() {
         matchRepository.deleteAll();
+        auditLogService.logAction(1L, "DELETE", "Match", null, "Deleted all matches.");
     }
 
     @Override
@@ -95,6 +103,8 @@ public class MatchServiceImpl implements MatchService {
         Optional<Match> match = matchRepository.findById(id);
         if (match.isPresent()) {
             matchRepository.deleteById(id);
+            auditLogService.logAction(1L, "DELETE", "Match", id,
+                    "Deleted match with ID: " + id);
             return true;
         } else {
             return false;

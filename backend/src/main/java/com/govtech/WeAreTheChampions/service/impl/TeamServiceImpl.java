@@ -1,7 +1,9 @@
 package com.govtech.WeAreTheChampions.service.impl;
 
 import com.govtech.WeAreTheChampions.entity.Team;
+import com.govtech.WeAreTheChampions.entity.AuditLog;
 import com.govtech.WeAreTheChampions.repository.TeamRepository;
+import com.govtech.WeAreTheChampions.service.AuditLogService;
 import com.govtech.WeAreTheChampions.service.TeamService;
 
 import lombok.AllArgsConstructor;
@@ -16,10 +18,15 @@ import org.springframework.stereotype.Service;
 public class TeamServiceImpl implements TeamService {
 
     private TeamRepository teamRepository;
+    private AuditLogService auditLogService;
 
     @Override
     public List<Team> addTeams(List<Team> teams) {
-        return teamRepository.saveAll(teams);
+        List<Team> savedTeams = teamRepository.saveAll(teams);
+        for (Team team : savedTeams) {
+            auditLogService.logAction(1L, "CREATE", "Team", team.getId(), "Created team with name: " + team.getName());
+        }
+        return savedTeams;
     }
 
     @Override
@@ -40,6 +47,7 @@ public class TeamServiceImpl implements TeamService {
     @Override
     public void deleteAllTeams() {
         teamRepository.deleteAll();
+        auditLogService.logAction(1L, "DELETE", "Team", null, "Deleted all teams.");
     }
 
     @Override
@@ -49,7 +57,10 @@ public class TeamServiceImpl implements TeamService {
         existingTeam.setName(team.getName());
         existingTeam.setRegistrationDate(team.getRegistrationDate());
         existingTeam.setGroupNumber(team.getGroupNumber());
-        return teamRepository.save(existingTeam);
+        Team updatedTeam = teamRepository.save(existingTeam);
+
+        auditLogService.logAction(1L, "UPDATE", "Team", updatedTeam.getId(), "Updated team with name: " + updatedTeam.getName());
+        return updatedTeam;
     }
 
     @Override
@@ -57,6 +68,7 @@ public class TeamServiceImpl implements TeamService {
         Optional<Team> team = teamRepository.findById(id);
         if (team.isPresent()) {
             teamRepository.deleteById(id);
+            auditLogService.logAction(1L, "DELETE", "Team", id, "Deleted team with name: " + team.get().getName());
             return true;
         } else {
             return false;

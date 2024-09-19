@@ -27,10 +27,6 @@ public class MatchController {
     public ResponseEntity<?> addMatches(@RequestBody List<MatchDto> matchDtos) {
         List<Match> newMatches = matchService.addMatches(matchDtos);
 
-        for (MatchDto matchDto : matchDtos) {
-            System.out.println("MatchDto - Team A Goals: " + matchDto.getTeamAGoals() + ", Team B Goals: " + matchDto.getTeamBGoals());
-        }
-
         List<MatchDto> response = newMatches.stream()
                                             .map(MatchDto::fromEntity)
                                             .collect(Collectors.toList());
