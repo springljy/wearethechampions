@@ -3,8 +3,6 @@ package com.govtech.WeAreTheChampions.service;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.stereotype.Service;
-
 import com.govtech.WeAreTheChampions.entity.Team;
 
 public interface TeamService {

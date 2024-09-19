@@ -1,5 +1,6 @@
 package com.govtech.WeAreTheChampions;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -18,13 +19,12 @@ import java.util.Scanner;
 import java.util.Optional;
 
 @SpringBootApplication
-@EnableJpaRepositories("my.package.base.*")
-@ComponentScan(basePackages = { "my.package.base.*" })
-@EntityScan("com.govtech.WeAreTheChampions.entity")
 public class WeAreTheChampionsApplication implements CommandLineRunner {
 
+	@Autowired
 	private TeamService teamService;
 	
+	@Autowired
 	private MatchService matchService;
 
 	public static void main(String[] args) {
@@ -44,7 +44,7 @@ public class WeAreTheChampionsApplication implements CommandLineRunner {
 			while (response < 1 || response > 3) {
 				System.out.print("> ");
 				response = sc.nextInt();
-				sc.nextLine(); // Consume newline
+				sc.nextLine(); 
 
 				if (response == 1) {
 					manageTeams(sc);
