@@ -60,10 +60,13 @@ public class MatchController {
         }
     }
 
-    @GetMapping("/rankings")
-    public ResponseEntity<Void> calculateRankings() {
-        matchService.calculateTeamPointsAndRankings();
-        return ResponseEntity.ok().build();
+    @GetMapping("/team/{teamId}")
+    public ResponseEntity<List<Match>> getMatchesByTeam(@PathVariable Long teamId) {
+        List<Match> matches = matchService.getMatchesByTeam(teamId);
+        if (matches.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(matches);
     }
 }
 

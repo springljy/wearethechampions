@@ -12,6 +12,5 @@ public interface MatchService {
     void deleteAllMatches();
     boolean deleteMatch(Long id);
     List<Match> getAllMatches();
-    void calculateTeamPointsAndRankings();
-    
+    List<Match> getMatchesByTeam(Long teamId);
 }

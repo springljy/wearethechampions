@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './teammanagement.css';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import InfoIcon from '@mui/icons-material/Info';
 
 interface Team {
   id?: number;
@@ -13,12 +14,24 @@ interface Team {
   alternateMatchPoints: number;
 }
 
+interface Match {
+  id: number;
+  teamA: Team;
+  teamB: Team;
+  teamAGoals: number;
+  teamBGoals: number;
+}
+
 const TeamManagement: React.FC = () => {
   const [teams, setTeams] = useState<Team[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [showModal, setShowModal] = useState<boolean>(false);
   const [newTeamDetails, setNewTeamDetails] = useState<string>('');
   const [filteredTeams, setFilteredTeams] = useState<Team[]>(teams);
+  const [matches, setMatches] = useState<any[]>([]);
+  const [selectedTeamMatches, setSelectedTeamMatches] = useState<Match[]>([]);
+  const [showMatchesPopup, setShowMatchesPopup] = useState<boolean>(false);
+  const [popupPosition, setPopupPosition] = useState({ top: 0, left: 0 });
 
   // To retrieve all teams
   useEffect(() => {
@@ -26,6 +39,14 @@ const TeamManagement: React.FC = () => {
       .then(response => response.json())
       .then(data => setTeams(data))
       .catch(error => console.error('Error fetching teams:', error));
+  }, []);
+
+  // To retrieve all matches
+  useEffect(() => {
+    fetch('http://localhost:8080/api/matches')
+      .then(response => response.json())
+      .then(data => setMatches(data))
+      .catch(error => console.error('Error fetching matches:', error));
   }, []);
 
   // To search for teams
@@ -181,7 +202,6 @@ const TeamManagement: React.FC = () => {
     setValidationErrors({});
   };
 
-
   // Delete
   const handleDelete = (id: number) => {
     if (window.confirm("Are you sure you want to delete this team?")) {
@@ -224,6 +244,37 @@ const TeamManagement: React.FC = () => {
     }
   };
 
+  // Fetch matches for a team
+  const handleFetchMatches = (event: React.MouseEvent<HTMLButtonElement>, teamId: number) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    setPopupPosition({
+      top: rect.bottom + window.scrollY,
+      left: rect.left + window.scrollX,
+    });
+
+    fetch(`http://localhost:8080/api/matches/team/${teamId}`)
+      .then(response => {
+        if (!response.ok) {
+          if (response.status === 204) {
+            setSelectedTeamMatches([]);
+            setShowMatchesPopup(true);
+            return;
+          }
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((matches: Match[]) => {
+        setSelectedTeamMatches(matches);
+        setShowMatchesPopup(true);
+      })
+      .catch(error => console.error('Error fetching matches:', error));
+  };
+
+  const handleClosePopup = () => {
+    setShowMatchesPopup(false);
+  };
+
   return (
     <div className="team-management wrapper">
       <h1>Team Management</h1>
@@ -241,15 +292,17 @@ const TeamManagement: React.FC = () => {
         </div>
         <div className="button-group">
 
-        {/* Add Team Button */}
-        <button onClick={() => setShowModal(true)} className="add-button">
-          Add Team
-        </button>
+          {/* Add Team Button */}
+          <button onClick={() => setShowModal(true)} className="add-button">
+            Add Team
+          </button>
 
-        {/* Delete All Teams Button */}
-        <button onClick={handleDeleteAll} className="delete-all-button">
-          Delete All
-        </button>
+          {/* Delete All Teams Button */}
+          {matches.length === 0 && (
+            <button onClick={handleDeleteAll} className="delete-all-button">
+              Delete All
+            </button>
+          )}
         </div>
 
       </div>
@@ -262,6 +315,7 @@ const TeamManagement: React.FC = () => {
             <th>Registration Date</th>
             <th>Group Number</th>
             <th>Matches Played</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -309,6 +363,11 @@ const TeamManagement: React.FC = () => {
                   )}
                 </td>
                 <td>
+                  <button onClick={(e) => handleFetchMatches(e, team.id!)}>
+                    <InfoIcon />
+                  </button>
+                </td>
+                <td>
                   {editingTeam === index ? (
                     <>
                       <button onClick={() => handleSave(index)}>Save</button>
@@ -316,12 +375,16 @@ const TeamManagement: React.FC = () => {
                     </>
                   ) : (
                     <>
-                      <button onClick={() => handleEdit(index)}>
-                        <EditIcon />
-                      </button>
-                      <button onClick={() => handleDelete(team.id!)}>
-                        <DeleteIcon />
-                      </button>
+                      {matches.length === 0 && (
+                        <>
+                          <button onClick={() => handleEdit(index)}>
+                            <EditIcon />
+                          </button>
+                          <button onClick={() => handleDelete(team.id!)}>
+                            <DeleteIcon />
+                          </button>
+                        </>
+                      )}
                     </>
                   )}
                 </td>
@@ -353,6 +416,36 @@ const TeamManagement: React.FC = () => {
               Close
             </button>
           </div>
+        </div>
+      )}
+
+      {/* Custom Popup for Matches */}
+      {showMatchesPopup && (
+        <div 
+          className="matches-popup"
+          style={{
+            position: 'absolute',
+            top: `${popupPosition.top}px`,
+            left: `${popupPosition.left}px`,
+            backgroundColor: 'white',
+            border: '1px solid black',
+            padding: '10px',
+            zIndex: 1000,
+          }}
+        >
+          <button onClick={handleClosePopup} style={{ float: 'right' }}>X</button>
+          <h3>Matches</h3>
+          {selectedTeamMatches.length > 0 ? (
+            <ul>
+              {selectedTeamMatches.map((match, index) => (
+                <li key={index}>
+                  {match.teamA.name} {match.teamAGoals} - {match.teamBGoals} {match.teamB.name}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>No matches found for this team.</p>
+          )}
         </div>
       )}
     </div>

@@ -38,12 +38,12 @@ public class MatchServiceImpl implements MatchService {
             int teamBGoals = matchDto.getTeamBGoals();
 
             Match match = Match.builder()
-                .teamA(teamA)
-                .teamB(teamB)
-                .teamAGoals(teamAGoals)
-                .teamBGoals(teamBGoals)
-                .result(calculateResult(teamAGoals, teamBGoals))
-                .build();
+                    .teamA(teamA)
+                    .teamB(teamB)
+                    .teamAGoals(teamAGoals)
+                    .teamBGoals(teamBGoals)
+                    .result(calculateResult(teamAGoals, teamBGoals))
+                    .build();
 
             newMatches.add(match);
             updateTeamStats(teamA, teamB, teamAGoals, teamBGoals);
@@ -105,6 +105,8 @@ public class MatchServiceImpl implements MatchService {
         return matchRepository.findAll();
     }
 
-    public void calculateTeamPointsAndRankings() {
+    @Override
+    public List<Match> getMatchesByTeam(Long teamId) {
+        return matchRepository.findByTeamId(teamId);
     }
 }
