@@ -79,4 +79,7 @@ Before running the project, ensure the following are installed on your machine:
 - **Database**: MySQL
 - **Build Tools**: Maven for Spring Boot, npm for React
 
+## Assumptions
+- I assumed that teams cannot be deleted if matches exist, as the presence of matches implies the existence of teams.
+
 You should now be able to run the project locally and explore the full functionality of managing teams, matches, and audit logs. If you encounter any issues, feel free to reach out at springljy12@gmail.com. Thank you.
