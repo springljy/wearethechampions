@@ -3,6 +3,8 @@ package com.govtech.WeAreTheChampions.entity;
 import lombok.*;
 import jakarta.persistence.*;
 
+import java.util.Set;
+
 @Entity
 @Table(name = "matches")
 @Data
@@ -15,18 +17,21 @@ public class Match {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "team1_id", nullable = false)
-    private Team team1;
+    @Column(name = "team_a_goals", nullable = false)
+    private int teamAGoals;
+
+    @Column(name = "team_b_goals", nullable = false)
+    private int teamBGoals;
 
     @ManyToOne
-    @JoinColumn(name = "team2_id", nullable = false)
-    private Team team2;
+    @JoinColumn(name = "team_a_id", nullable = false)
+    private Team teamA;
 
-    @Column(name = "team1_goals", nullable = false)
-    private int team1Goals;
+    @ManyToOne
+    @JoinColumn(name = "team_b_id", nullable = false)
+    private Team teamB;
 
-    @Column(name = "team2_goals", nullable = false)
-    private int team2Goals;
+    @Column(name = "result", nullable = false)
+    private String result; // 'win', 'draw', or 'loss'
     
 }

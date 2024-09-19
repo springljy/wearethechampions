@@ -1,0 +1,189 @@
+.team-management {
+  padding: 40px;
+  max-width: 1200px;
+}
+
+h1 {
+  color: #333;
+  margin-bottom: 30px;
+  text-align: center;
+  font-size: 2.5em;
+}
+
+.table-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.search-bar {
+  padding: 12px;
+  width: 300px;
+  font-size: 14px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  transition: border-color 0.3s ease;
+}
+
+.search-bar:focus {
+  outline: none;
+  border-color: #666;
+}
+
+.add-button, .delete-all-button {
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+  margin: 0 5px;
+  padding: 10px 15px;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+}
+
+.button-group {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 0px;
+}
+
+.add-button {
+  background-color: #4CAF50;
+}
+
+.add-button:hover {
+  background-color: #45a049;
+}
+
+.delete-all-button {
+  background-color: #f44336;
+}
+
+.delete-all-button:hover {
+  background-color: #d32f2f;
+}
+
+.team-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.team-table th,
+.team-table td {
+  padding: 15px;
+  text-align: left;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.team-table th {
+  background-color: #f5f5f5;
+  color: #333;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 14px;
+}
+
+.team-table tr:hover {
+  background-color: #f9f9f9;
+}
+
+.team-table button {
+  padding: 8px 12px;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background-color 0.3s ease;
+  margin-right: 5px;
+}
+
+.team-table button:last-child {
+  margin-right: 0;
+}
+
+.team-table button:hover {
+  opacity: 0.8;
+}
+
+.team-table button:first-of-type {
+  color: #2196F3;
+  background-color: #fff;
+}
+
+.team-table button:last-of-type {
+  color: #f44336;
+  background-color: #fff;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 30px;
+  border-radius: 8px;
+  width: 400px;
+  max-width: 90%;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+.team-details-input {
+  width: 100%;
+  height: 100px;
+  margin-bottom: 20px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  resize: vertical;
+}
+
+.submit-button,
+.close-button {
+  padding: 12px 24px;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.submit-button {
+  background-color: #4CAF50;
+  margin-right: 10px;
+}
+
+.submit-button:hover {
+  background-color: #45a049;
+}
+
+.close-button {
+  background-color: #f44336;
+}
+
+.close-button:hover {
+  background-color: #d32f2f;
+}
+
+.error {
+  color: #f44336;
+  font-size: 12px;
+  margin-top: 5px;
+}
